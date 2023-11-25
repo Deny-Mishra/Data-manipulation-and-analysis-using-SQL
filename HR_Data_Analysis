@@ -1,0 +1,58 @@
+ select * from deny.hr_dataa;
+ /*calculating total number of employee in the company*/
+ Select sum(Employee_Number) as Total_Employee from deny.hr_dataa;
+
+/*Calculating average employee age*/
+select avg(Age) as Average_Employee_Age from deny.hr_dataa;
+
+/*Caculating average hour rate*/
+select avg(Hourly_Rate) as Employee_Hourly_Rate from deny.hr_dataa;
+
+/* Finding distinct values in Enviroment_Satisfaction*/
+SELECT distinct Environment_Satisfaction AS Distinct_Values 
+FROM deny.hr_dataa
+order by  Environment_Satisfaction asc;
+
+/*Finding frequency of each response of Environment_Satisfaction Survey*/
+SELECT Environment_Satisfaction, COUNT(*) AS Frequency
+FROM deny.hr_dataa
+GROUP BY Environment_Satisfaction
+ORDER BY Environment_Satisfaction;
+
+/*Job Satisfaction Survey*/
+select Job_Satisfaction, count(*) As Frequency from deny.hr_dataa
+Group by Job_Satisfaction
+order by Job_Satisfaction;
+
+/*Measuring Aveage monthly income based on field of education*/
+SELECT Education_Field, AVG(Monthly_Income) AS Average_Monthly_Income
+FROM deny.hr_dataa
+GROUP BY Education_Field;
+
+/*Measuing average monthly income based on the education level*/
+select Education, avg (Monthly_Income) As Average_Monthly_Income from deny.hr_dataa
+Group by Education;
+
+/*comparing thre relation between Job satisfaction level with respect with years spend with the current manager*/
+select Job_Satisfaction, avg(Years_With_curr_Manager) as Number_of_Years_with_current_manager from deny.hr_dataa
+Group by Job_Satisfaction
+order by Job_Satisfaction asc;
+
+/**Relation between Number of years spend in current role and job satisfaction*/
+select Job_Satisfaction, avg(Years_In_Current_Role) as Number_of_Years_In_Current_Role from deny.hr_dataa
+group by Job_Satisfaction
+order by Job_Satisfaction;
+
+/*Analyzing Perfromance with respect number of years of experience*/
+select Performance_Rating, avg(Total_Working_Years) as Total_Number_of_Working_Experience from deny.hr_dataa
+group by Performance_Rating
+order by Performance_Rating;
+
+/*How Frequently Comapnies are changed by the employees with respect to Total Working Years using Ratio Analysis*/
+SELECT 
+    Num_Companies_Worked, 
+    AVG(Total_working_Years) AS Total_Number_of_Working_Experience,
+    Num_Companies_Worked / AVG(Total_working_Years) AS Ratio_NumComp_to_TotalExp /*Ratio*/
+FROM deny.hr_dataa
+GROUP BY Num_Companies_Worked
+ORDER BY Num_Companies_Worked;
