@@ -1,0 +1,123 @@
+/**********CTE**************************/
+CREATE TABLE employees_file (
+    EmployeeID INT,
+    Name VARCHAR(50),
+    Department VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    HireDate DATE
+);
+
+INSERT INTO employees_file (EmployeeID, Name, Department, Salary, HireDate)
+VALUES
+    (1, 'John Doe', 'Sales', 50000.00, '2023-01-15'),
+    (2, 'Alice Smith', 'Marketing', 60000.00, '2022-07-20'),
+    (3, 'Bob Johnson', 'HR', 55000.00, '2023-03-10'),
+    (4, 'Emma Brown', 'Sales', 48000.00, '2022-11-05'),
+	(10, 'James Anderson', 'Sales', 51000.00, '2022-08-12'),
+	(11, 'Ava Garcia', 'IT', 58000.00, '2022-09-10'),
+    (12, 'Ethan Murphy', 'Finance', 59000.00, '2023-04-15'),
+    (13, 'Isabella Rivera', 'Marketing', 49000.00, '2022-12-20'),
+    (14, 'Mason Lopez', 'Sales', 53000.00, '2023-03-25'),
+    (15, 'Charlotte Hernandez', 'HR', 51000.00, '2023-01-30'),
+    (16, 'Logan Adams', 'IT', 54000.00, '2022-10-05'),
+    (17, 'Amelia Campbell', 'Finance', 56000.00, '2023-05-18'),
+    (18, 'Oliver Turner', 'Sales', 52500.00, '2022-11-28'),
+      (20, 'Leo Mitchell', 'IT', 55000.00, '2022-09-08'),
+    (21, 'Evelyn Adams', 'HR', 58000.00, '2023-02-12'),
+    (22, 'Jack Parker', 'Finance', 56000.00, '2022-08-30'),
+    (23, 'Avery Morris', 'Sales', 53000.00, '2023-01-25'),
+    (24, 'Sofia Collins', 'Marketing', 57000.00, '2022-10-18'),
+    (25, 'Jackson Peterson', 'IT', 54000.00, '2023-04-05'),
+    (27, 'Luna Cooper', 'Sales', 52000.00, '2023-02-28'),
+    (28, 'Lucas Morgan', 'Marketing', 59000.00, '2022-07-10'),
+    (29, 'Ella Bennett', 'IT', 57000.00, '2023-05-02'),
+    (30, 'Aiden Murphy', 'Finance', 53500.00, '2022-11-20'),
+    (31, 'Scarlett Phillips', 'Sales', 51000.00, '2023-03-15'),
+    (32, 'Mateo Carter', 'IT', 55000.00, '2022-09-28'),
+      (34, 'Henry Hayes', 'HR', 56000.00, '2022-08-25'),
+    (35, 'Nova Wood', 'Finance', 58000.00, '2023-04-20'),
+     (38, 'Carter Watson', 'Marketing', 52000.00, '2022-10-30'),
+    (39, 'Hannah Brooks', 'HR', 59000.00, '2023-01-05'),
+    (40, 'Grayson Alexander', 'Finance', 60000.00, '2022-06-15');
+    /******************************************************************************************/
+    select * from employees_file;
+    /******************************************************************************************/
+    /***AGGREGATE FUNCTIONS**/
+    WITH EmployeeCTE AS (
+    SELECT *,
+            AVG(Salary) OVER() AS avg_salary,
+        MAX(Salary) OVER() AS max_salary,
+        MIN(Salary) OVER() AS min_salary
+	from employees_file)
+    SELECT * FROM EmployeeCTE;
+    /*****************************************************************************************/
+       WITH EmployeeCTE AS (
+			SELECT Salary, Name,
+			AVG(Salary) OVER() AS avg_salary,
+			MAX(Salary) OVER() AS max_salary,
+			MIN(Salary) OVER() AS min_salary
+	from employees_file)
+    SELECT * FROM EmployeeCTE;
+/***************************************************************************************/
+/**EXTRACTING DATE AND TIME**/
+    WITH Employees_CTE AS (
+		SELECT Salary,
+		UPPER(Name) AS upper_name,
+		EXTRACT(YEAR FROM HireDate) AS hire_year,
+        MONTHName(HireDate) AS hire_month_name
+	from employees_file)
+    select * from Employees_CTE;
+
+/****************************************************************************************/
+/***MATHEMATICAL CALCULATIONS and conditional sentence****/
+WITH employees_math AS (
+    SELECT UPPER(Name) AS NAME,
+           Salary,
+           AVG(Salary) OVER() AS avg_salary,
+           Salary * 0.1 AS tax_amount
+    FROM employees_file
+),
+employees_with_net_salary AS (
+    SELECT *,
+           Salary - tax_amount AS Net_Salary
+    FROM employees_math
+)
+SELECT *,
+       CASE 
+           WHEN Salary >= avg_salary THEN 'Above Avg Salary'
+           ELSE 'Below Avg Salary'
+       END AS salary_comparison
+FROM employees_with_net_salary;
+
+
+
+
+/**more conditional formatting under CTE***/
+WITH employee_net_salary AS (
+   select *,
+   CASE 
+      WHEN Salary > 60000 THEN 'High Salary'
+      WHEN Salary >= 50000 AND Salary <= 60000 THEN 'Medium Salary'
+      ELSE 'Low Salary'
+      END AS salary_category
+    FROM employees_file /**we have to take original file---- we cannot take datafile built using CTE because they ain't saved as permanent dataframe to retrieve any data**/
+)
+SELECT * FROM employee_net_salary;
+/*******************************************************************************************/
+with average_department_salary as(
+	select *,
+    avg(salary) over (partition by Department) as average_dept_salary
+    from employees_file
+    )
+    
+    select *,
+		case
+			when salary > average_dept_salary as 'Higher Than Average Department Salary'
+            else 'Below average salary'
+		end as department_average_comparison
+	from average_department_salary
+)
+select * from average_department_salary
+
+    
+    
