@@ -1,0 +1,150 @@
+/*****************TABLE 1********************************************Employee ID, Name Department and  Department**/
+CREATE TABLE employee_info.employees22 (
+    EmployeeID INT,
+    Name VARCHAR(50),
+    Department VARCHAR(50)
+);
+INSERT INTO employee_info.employees22 (EmployeeID, Name, Department)
+VALUES
+(1, 'John Doe', 'Sales'),
+(2, 'Alice Smith', 'Marketing'),
+(3, 'Bob Johnson', 'HR'),
+(6, 'Michael Clark', 'IT'),
+(8, 'William Davis', 'Finance'),
+(11, 'Ava Garcia', 'IT'),
+(12, 'Ethan Murphy', 'Finance'),
+(14, 'Mason Lopez', 'Sales'),
+(15, 'Charlotte Hernandez', 'HR'),
+(16, 'Logan Adams', 'IT'),
+(17, 'Amelia Campbell', 'Finance'),
+(18, 'Oliver Turner', 'Sales'),
+(19, 'Harper Parker', 'Marketing'),
+(20, 'Leo Mitchell', 'IT'),
+(21, 'Evelyn Adams', 'HR'),
+(22, 'Jack Parker', 'Finance'),
+(23, 'Avery Morris', 'Sales'),
+(24, 'Sofia Collins', 'Marketing'),
+(25, 'Jackson Peterson', 'IT'),
+(26, 'Liam Reed', 'HR'),
+(27, 'Luna Cooper', 'Sales'),
+(28, 'Lucas Morgan', 'Marketing'),
+(29, 'Ella Bennett', 'IT'),
+(30, 'Aiden Murphy', 'Finance'),
+(31, 'Scarlett Phillips', 'Sales'),
+(32, 'Mateo Carter', 'IT'),
+(33, 'Madison Ross', 'Marketing'),
+(34, 'Henry Hayes', 'HR'),
+(35, 'Nova Wood', 'Finance'),
+(36, 'Asher Price', 'Sales'),
+(37, 'Zoe Griffin', 'IT'),
+(38, 'Carter Watson', 'Marketing'),
+(39, 'Hannah Brooks', 'HR'),
+(40, 'Grayson Alexander', 'Finance');
+
+select * from employee_info.employees22;
+
+/*********TABLE 2*********************************Employee ID, Salary and  Hire**/
+  CREATE TABLE employee_info.employee_details22 (
+    EmployeeID INT,
+    Salary DECIMAL(10, 2),
+    HireDate DATE
+);
+
+-- Inserting data into the employee_details table
+INSERT INTO employee_info.employee_details22 (EmployeeID, Salary, HireDate)
+VALUES
+(1, 50000.00, '2023-01-15'),
+(2, 60000.00, '2022-07-20'),
+(3, 55000.00, '2023-03-10'),
+(4, 48000.00, '2022-11-05'),
+(5, 52000.00, '2023-02-28'),
+(6, 58000.00, '2022-09-10'),
+(7, 59000.00, '2023-04-15'),
+(8, 49000.00, '2022-12-20'),
+(9, 53000.00, '2023-03-25'),
+(10, 51000.00, '2022-08-12'),
+(11, 54000.00, '2023-01-30'),
+(12, 56000.00, '2022-10-05'),
+(13, 57000.00, '2023-05-18'),
+(14, 52500.00, '2022-11-28'),
+(15, 52000.00, '2023-03-20'),
+(16, 55000.00, '2022-09-08'),
+(17, 58000.00, '2023-02-12'),
+(18, 56000.00, '2022-08-30'),
+(19, 53000.00, '2023-01-25'),
+(20, 57000.00, '2022-10-18'),
+(21, 54000.00, '2023-04-05'),
+(22, 55000.00, '2022-12-15'),
+(23, 52000.00, '2023-02-28'),
+(24, 59000.00, '2022-07-10'),
+(25, 57000.00, '2023-05-02'),
+(26, 53500.00, '2022-11-20'),
+(27, 51000.00, '2023-03-15'),
+(28, 55000.00, '2022-09-28'),
+(29, 54000.00, '2023-01-10'),
+(30, 56000.00, '2022-08-25'),
+(31, 58000.00, '2023-04-20'),
+(32, 59000.00, '2022-12-05'),
+(33, 53000.00, '2023-02-10'),
+(34, 52000.00, '2022-10-30'),
+(35, 59000.00, '2023-01-05'),
+(36, 60000.00, '2022-06-15'),
+(37, 54500.00, '2023-03-28'),
+(38, 48500.00, '2022-11-18'),
+(39, 52500.00, '2023-02-25'),
+(40, 58500.00, '2022-09-20'),
+(41, 59500.00, '2023-04-10'),
+(42, 49500.00, '2022-12-25'),
+(43, 53500.00, '2023-03-30'),
+(44, 51500.00, '2022-08-22'),
+(45, 54500.00, '2023-01-15'),
+(46, 56500.00, '2022-10-08'),
+(47, 57500.00, '2023-05-25'),
+(48, 53000.00, '2022-11-28'),
+(49, 53500.00, '2023-03-20'),
+(50, 55500.00, '2022-09-05'),
+(51, 58500.00, '2023-02-15'),
+(52, 56500.00, '2022-08-28'),
+(53, 53500.00, '2023-01-22'),
+(54, 57500.00, '2022-10-25'),
+(55, 55500.00, '2023-04-12'),
+(56, 54500.00, '2022-12-10'),
+(57, 52500.00, '2023-02-25'),
+(58, 59500.00, '2022-07-15'),
+(59, 57500.00, '2023-04-30'),
+(60, 54000.00, '2022-11-22'),
+(61, 54000.00, '2023-03-05');
+    select * from employee_info.employee_details22;
+/*Innter Joints or Join (Both gives same output)*/
+SELECT *
+FROM employee_info.employee_details22 ed
+INNER JOIN employee_info.employees22 em ON ed.EmployeeID = em.EmployeeID;
+
+SELECT *
+FROM employee_info.employee_details22 ed
+JOIN employee_info.employees22 em ON ed.EmployeeID = em.EmployeeID;
+
+/**left joint**/
+
+SELECT *
+FROM employee_info.employee_details22 ed /***every observation from this table (employee_details22) will be connsidered and observations from another table from the line below will be attached from the next table**/
+left JOIN employee_info.employees22 em ON ed.EmployeeID = em.EmployeeID;
+
+/**interchanging the table and carrying the same left join we shall find difference in output**/
+SELECT *
+FROM  employee_info.employees22 em
+left JOIN employee_info.employee_details22 ed ON ed.EmployeeID = em.EmployeeID;
+
+
+/**Right Joint**/
+SELECT *
+FROM employee_info.employee_details22 ed
+Right JOIN employee_info.employees22 em ON ed.EmployeeID = em.EmployeeID;
+/*interchaning the tables in the code but still using the same right join will lead to differnece in output**/
+SELECT *
+FROM employee_info.employees22 em
+Right JOIN employee_info.employee_details22 ed ON ed.EmployeeID = em.EmployeeID;
+
+
+
+
