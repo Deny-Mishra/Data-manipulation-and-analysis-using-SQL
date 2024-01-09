@@ -1,0 +1,86 @@
+/*******
+Window functions in SQL refer to a group of functions that perform calculations across a set of rows, referred to as a "window," within a specified range or partition. 
+These functions operate on a subset of rows related to the current row and can return a single value for each row based on this defined window.
+These functions are termed "window" functions because they allow you to perform computations over a specific subset or window of rows, unlike traditional aggregate functions (such as SUM, AVG, COUNT) 
+that operate on an entire result set.
+Key aspects of window functions include:
+        Partitioning
+        Ordering
+Some common window functions include 
+        ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE(), LAG(), LEAD(), and aggregate functions used as window functions (SUM(), AVG(), MIN(), MAX(), etc.).
+**********************************************************************************************************************************************************************************/
+CREATE TABLE employees_details (
+    EmployeeID INT,
+    Name VARCHAR(50),
+    Age Int,
+    Department VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    HireDate DATE
+);
+
+INSERT INTO employees_details (EmployeeID, Name, Age, Department, Salary, HireDate)
+VALUES
+    (1, 'John Doe', 30, 'Sales', 50000.00, '2023-01-15'),
+    (2, 'Alice Smith',34, 'Marketing', 60000.00, '2022-07-20'),
+    (3, 'Bob Johnson', 29,'HR', 55000.00, '2023-03-10'),
+    (4, 'Emma Brown', 43, 'Sales', 48000.00, '2022-11-05'),
+	  (10, 'James Anderson',55, 'Sales', 51000.00, '2022-08-12'),
+  	(11, 'Ava Garcia', 59,'IT', 58000.00, '2022-09-10'),
+    (12, 'Ethan Murphy',26,'Finance', 59000.00, '2023-04-15'),
+    (13, 'Isabella Rivera',25, 'Marketing', 49000.00, '2022-12-20'),
+    (14, 'Mason Lopez',22, 'Sales', 53000.00, '2023-03-25'),
+    (15, 'Charlotte Hernandez',31, 'HR', 51000.00, '2023-01-30'),
+    (16, 'Logan Adams',30, 'IT', 54000.00, '2022-10-05'),
+    (17, 'Amelia Campbell',40,'Finance', 56000.00, '2023-05-18'),
+    (18, 'Oliver Turner', 50,'Sales', 52500.00, '2022-11-28'),
+	  (20, 'Leo Mitchell', 55,'IT', 55000.00, '2022-09-08'),
+    (21, 'Evelyn Adams', 25,'HR', 58000.00, '2023-02-12'),
+    (22, 'Jack Parker',35, 'Finance', 56000.00, '2022-08-30'),
+    (23, 'Avery Morris',45, 'Sales', 53000.00, '2023-01-25'),
+    (24, 'Sofia Collins', 21,'Marketing', 57000.00, '2022-10-18'),
+    (25, 'Jackson Peterson',31, 'IT', 54000.00, '2023-04-05'),
+    (27, 'Luna Cooper',41, 'Sales', 52000.00, '2023-02-28'),
+    (28, 'Lucas Morgan',51, 'Marketing', 59000.00, '2022-07-10'),
+    (29, 'Ella Bennett', 61, 'IT', 57000.00, '2023-05-02'),
+    (30, 'Aiden Murphy',22, 'Finance', 53500.00, '2022-11-20'),
+    (31, 'Scarlett Phillips',32, 'Sales', 51000.00, '2023-03-15'),
+    (32, 'Mateo Carter',42, 'IT', 55000.00, '2022-09-28'),
+      (34, 'Henry Hayes',52, 'HR', 56000.00, '2022-08-25'),
+    (35, 'Nova Wood',62, 'Finance', 58000.00, '2023-04-20'),
+     (38, 'Carter Watson',23, 'Marketing', 52000.00, '2022-10-30'),
+    (39, 'Hannah Brooks',32,'HR', 59000.00, '2023-01-05'),
+    (40, 'Grayson Alexander',42, 'Finance', 60000.00, '2022-06-15');
+/************************************************************************************************************************************/
+    select * from employees_details;
+/************************************************************************************************************************************/
+/************************************************************************************************************************************/
+/***cumulative distribution**/
+-- Only finding cumulative salary------- > using sum() function--
+SELECT Salary,
+		sum(salary) over (order by EmployeeID) as cumulative_salary
+FROM Employees_details;
+
+-- CUME_DIST() -------> to find cumulative salary based on department--
+SELECT Department, Salary,
+       CUME_DIST() OVER (PARTITION BY Department ORDER BY Salary) AS CumulativeDistribution
+FROM Employees_details;  
+/************************************************************************************************************************************/
+/***FInding value of certain position using Nth Value() function**/
+-- NTH_VALUE()----- > FInding 
+SELECT Department, Salary,
+       NTH_VALUE(Salary, 3) OVER (PARTITION BY Department ORDER BY Salary) AS Salary_third_place /***(Nth_value(Salary,3)---> indicates it will display 3rd value from salary column per department**/
+FROM employees_details;
+/*************************************************************************************************************************************/
+-- FIRST_VALUE() and LAST_VALUE()
+SELECT Department, Salary,
+       FIRST_VALUE(Salary) OVER (PARTITION BY Department ORDER BY Salary) AS FirstSalary
+FROM employees_details;
+
+/*************************************************************************************************************************************/
+/****PRevious value using LAG() function and NExt value using LEAD() function****/
+-- LAG() and LEAD()
+SELECT EmployeeID, Department, Salary,
+       LAG(Salary) OVER (PARTITION BY Department ORDER BY Salary) AS PreviousSalary,
+       LEAD(Salary) OVER (PARTITION BY Department ORDER BY Salary) AS NextSalary
+FROM Employees_details;
+
